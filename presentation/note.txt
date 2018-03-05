@@ -1,0 +1,97 @@
+Syncthing Core (CLI & Web UI)
+Latest is v0.14.44
+
+    Linux: 32 bit, 64 bit, ARM, AArch64, MIPS, MIPS-LE, PPC64, PPC64-LE
+    Windows: 32 bit, 64 bit
+    Mac OS X: 32 bit, 64 bit
+    FreeBSD: 32 bit, 64 bit
+    Solaris: 64 bit
+    Dragonfly BSD: 64 bit
+    NetBSD: 32 bit, 64 bit
+    OpenBSD: 32 bit, 64 bit
+    Source Code: v0.14.44
+
+* Written in go
+* MPLv2 License
+
+* Safe From Data Loss
+* Secure Against Attackers
+* Easy to Use
+* Syncthing should be approachable, understandable and inclusive.
+* Universally Available
+* For Individuals
+* Everything Else
+
+* Private. None of your data is ever stored anywhere else other than on your computers. There is no central server that might be compromised, legally or illegally.
+
+* Encrypted. All communication is secured using TLS. The encryption used includes perfect forward secrecy to prevent any eavesdropper from ever gaining access to your data.
+
+* Authenticated. Every node is identified by a strong cryptographic certificate. Only nodes you have explicitly allowed can connect to your cluster.
+
+* Open Discourse. Development and usage is always open for discussion.
+* Open Source. All source code is available on GitHub — what you see is what you get, there is no hidden funny business.
+* Open Protocol. The protocol is a documented standard — no hidden magic.
+* Open Development. Any bugs found are immediately visible for anyone to browse — no hidden flaws.
+
+
+# Introducer
+
+2.7. Introducer Configuration
+
+The introducer feature lets a device automatically add new devices. When two devices connect they exchange a list of mutually shared folders and the devices connected to those shares. In the following example:
+
+    Local device L sets remote device I as an introducer. They share the folder “Pictures”. Device I is sharing the folder with A and B, but L only shares with I.
+
+    Once L and I connect, L will add A and B automatically.
+
+    Remote device I also shares “Videos” with device C, but not with our local L. Device C will not be added to L as it is not connected to any folders that L and I share.
+
+The introduction process involves the autoconfiguration of device IDs, labels and configured address settings, but no other device-specific settings. For each offered device autoconfiguration is only applied once and is done so when a device connects to an introducer; a restart, after configuring a remote device to introduce, will force this. Once autoconfigured, device-specific settings will currently not receive any updates from an introducer.
+
+If an introducer adds or removes any devices or shares, or changes device-share settings, however, this change will be reflected to devices upon their next connection. Similarly, if an introduced device is no longer present on an introducer, or no longer shares any mutual folders with the device, it will be automatically removed when devices in the cluster next connect to the introducer.
+
+Note that devices which are introduced cannot be removed so long as the introducer device is still marked as such, and if they are unshared from a folder they will be re-added.
+
+Introducer status is transferable; that is, an introducers’ introducer will become your introducer as well.
+
+2.10.2. Local Firewall
+
+If your PC has a local firewall, you will need to open the following ports for incoming and outgoing traffic:
+
+    Port 22000/TCP (or the actual listening port if you have changed the Sync Protocol Listen Address setting.)
+    Port 21027/UDP (for discovery broadcasts on IPv4 and multicasts on IPv6)
+
+
+2.14. File Versioning
+
+https://docs.syncthing.net/users/versioning.html
+
+Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. This is called “file versioning” and uses one of the available versioning strategies described below. File versioning is configured per folder, on a per-device basis, and defaults to “no file versioning”, i.e. no old copies of files are kept.
+2.14.1. Trash Can File Versioning
+
+This versioning strategy emulates the common “trash can” approach. When a file is deleted or replaced due to a change on a remote device, it is a moved to the trash can in the .stversions folder. If a file with the same name was already in the trash can it is replaced.
+
+A configuration option is available to clean the trash can from files older than a specified number of days. If this is set to a positive number of days, files will be removed when they have been in the trash can that long. Setting this to zero prevents any files from being removed from the trash can automatically.
+2.14.2. Simple File Versioning
+
+With “Simple File Versioning” files are moved to the .stversions folder (inside your shared folder) when replaced or deleted on a remote device. This option also takes a value in an input titled “Keep Versions” which tells Syncthing how many old versions of the file it should keep. For example, if you set this value to 5, if a file is replaced 5 times on a remote device, you will see 5 time-stamped versions on that file in the “.stversions” folder on the other devices sharing the same folder.
+2.14.3. Staggered File Versioning
+
+With “Staggered File Versioning” files are also moved to a different folder when replaced or deleted on a remote device (just like “Simple File Versioning”), however, versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.
+
+With this versioning method it’s possible to specify where the versions are stored, with the default being the .stversions folder inside the normal folder path. If you set a custom version path, please ensure that it’s on the same partition or filesystem as the regular folder path, as moving files there may otherwise fail. You can use an absolute path (this is recommended) or a relative path. Relative paths are interpreted relative to Syncthing’s current or startup directory.
+
+The following intervals are used and they each have a maximum number of files that will be kept for each.
+
+1 Hour
+    For the first hour, the most recent version is kept every 30 seconds.
+1 Day
+    For the first day, the most recent version is kept every hour.
+30 Days
+    For the first 30 days, the most recent version is kept every day.
+Until Maximum Age
+    Until maximum age, the most recent version is kept every week.
+Maximum Age
+    The maximum time to keep a version in days. For example, to keep replaced or deleted files in the “.stversions” folder for an entire year, use 365. If only for 10 days, use 10. Note: Set to 0 to keep versions forever.
+
+2.14.4. External File Versioning

@@ -1,0 +1,72 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "debian_syncthing1" do |debian_sc1|
+    debian_sc1.vm.box = "bento/debian-9"
+    debian_sc1.vm.hostname = "debian9-sc1"
+    debian_sc1.vm.provision :shell, :path => "bootstrap_debian_syncthing.sh", :privileged=> false
+    debian_sc1.vm.network "private_network", ip: "172.28.128.11"
+    debian_sc1.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+  end
+
+  config.vm.define "debian_syncthing2" do |debian_sc2|
+    debian_sc2.vm.box = "bento/debian-9"
+    debian_sc2.vm.hostname = "debian9-sc2"
+    debian_sc2.vm.provision :shell, :path => "bootstrap_debian_syncthing.sh", :privileged=> false
+    debian_sc2.vm.network "private_network", ip: "172.28.128.12"
+    debian_sc2.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+  end
+
+  config.vm.define "debian_syncthing3" do |debian_sc3|
+    debian_sc3.vm.box = "bento/debian-9"
+    debian_sc3.vm.hostname = "debian9-sc3"
+    debian_sc3.vm.provision :shell, :path => "bootstrap_debian_syncthing.sh", :privileged=> false
+    debian_sc3.vm.network "private_network", ip: "172.28.128.13"
+    debian_sc3.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+  end
+
+  config.vm.define "debian_cli" do |debian_cli|
+    debian_cli.vm.box = "bento/debian-9"
+    debian_cli.vm.hostname = "debian9-cli"
+    debian_cli.vm.provision :shell, :path => "bootstrap_debian_cli.sh", :privileged=> false
+    debian_cli.vm.network "private_network", ip: "172.28.128.21"
+    debian_cli.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+  end
+
+
+  config.vm.define "debian_gui" do |debian_gui|
+    debian_gui.vm.box = "bento/debian-9"
+    debian_gui.vm.hostname = "debian9-gui"
+    debian_gui.vm.provision :shell, :path => "bootstrap_debian_gui.sh", :privileged=> false
+    debian_gui.vm.network "private_network", ip: "172.28.128.31"
+    debian_gui.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+    end
+  end
+
+
+  config.vm.define "win" do |win|
+    win.vm.boot_timeout = "300"
+    win.vm.box = "Microsoft/EdgeOnWindows10"
+    win.vm.hostname = "win"
+    win.vm.network "private_network", ip: "172.28.128.61"
+    win.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+    end
+  end
+
+  # Disable share folder
+  config.vm.synced_folder '.', "/vagrant", id: "vagrant-root", disabled: true
+end

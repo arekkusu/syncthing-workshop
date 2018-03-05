@@ -1,0 +1,377 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Introduction to Syncthing</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+
+  <body>
+    <div class="reveal"> <div class="slides">
+
+
+<section> 
+<section data-markdown> <textarea data-template>
+## Introduction to Syncthing
+
+![Syncthing logo][syncthing]
+
+* About me
+  * Alex
+  * arekkusu@r42.ch / alex@r42.ch
+
+[syncthing]: img/syncthing_logo.png
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+## Tokyo Hackerspace
+
+![Tokyo Hackerspace][thslogo]
+
+* [Events (Meetup)](https://www.meetup.com/TokyoHackerSpace/)
+* [TokyoHackerspace.org](https://www.tokyohackerspace.org)
+
+[thslogo]: img/thslogo.png
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+## Syncthing
+
+![Syncthing logo][syncthing_logo]
+
+* Syncthing
+
+* https://syncthing.net/
+* https://docs.syncthing.net/
+
+[syncthing_logo]: img/syncthing_logo.png
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+![Syncthing logo][syncthing_logo]
+
+ > Syncthing replaces proprietary sync and cloud services with something open, trustworthy and decentralized
+
+ > Your data is your data alone and you deserve to choose where it is stored, if it is shared with some third party and how it's transmitted over the Internet.
+
+[syncthing_logo]: img/syncthing_logo.png
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Where does it fit?
+
+![Many possibilities][solutions]
+
+[solutions]: img/solutions.png
+
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+* https://en.wikipedia.org/wiki/Comparison_of_file_synchronization_software
+* https://en.wikipedia.org/wiki/Zero-knowledge_proof
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## What is Syncthing?
+
+* Open Source file synchronization agent
+  * Cross-platform
+  * Decentralized
+  * Encrypted / authenticated
+
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+
+## What can Syncthing do?
+
+* Synchronize folder(s) between devices
+
+* Not a backup solution
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Demo
+
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+
+## Let's break things !
+
+* Delete Sync folder
+* Conflict
+* Connectivity
+* Nested Sync folder (don't do this)
+* ...
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+# How does it work?
+
+* Open Protocol
+
+* No central server
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Synchronization
+
+* Folder ID
+* File Versioning
+* Conflict handling
+* Ignore pattern
+
+</textarea> </section>
+
+<section data-markdown> <textarea data-template>
+
+## Synchronization
+
+* Send/Receive or Send only
+* Scan at fixed interval
+* Hidden folder
+  * '.stfolder' 
+  * '.stversions'
+  * '.stignore'
+
+</textarea> </section>
+
+<section data-markdown> <textarea data-template>
+
+## Synchronization
+
+* What is synchronized?
+  * File contents / modification time
+
+* What is not?
+  * POSIX/NFS ACL, hard link...
+
+* How?
+  * File are segmented into blocks
+  * Renaming / moving file
+  * Partially transfered data
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## The introducer
+
+* Remote device can be set as introducer
+  * Can automatically add new devices
+  * Only in caes of mutually shared folders
+
+* About automatically added devices
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Configuration
+
+* Web GUI
+  * Listen to localhost by default
+  * Consider security
+
+* Local config
+  * xml
+  * Private/public key
+
+</textarea></section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Security
+
+* Encryption and Authentication using TLS
+  * Both device authenticate using certificate
+  * Device ID = TLS cert hash
+  * Devices must be explicitly allowed
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Connectivity
+
+* TLS over 22000/TCP
+
+* Local discovery
+  * 21027/UDP
+
+* Global discovery
+  * UPnP / port forwarding
+  * Relaying
+
+</textarea> </section>
+
+<section data-markdown> <textarea data-template>
+
+## Server?
+
+* Syncthing Relay Server
+* Syncthing Discovery Server
+
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+
+## Privacy
+
+* Relay Server
+  * Knows IP, device ID
+
+* Disvovery Server
+  * Annoucement sent every 30min
+  * Mapping between device ID and IP
+
+* Eavesdropper can know:
+  * Machine running Syncthing
+  * Their device IDs
+
+</textarea> </section>
+
+<section data-markdown> <textarea data-template>
+
+## Reading
+
+  Push Away Your Privacy: Precise User Tracking Based on TLS Client Certificate Authentication
+
+* [Paper](http://tma.ifip.org/wordpress/wp-content/uploads/2017/06/tma2017_paper2.pdf)
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Other features
+
+* Logs
+  * stdout by default or file
+  * Auditing log ('-audit')
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Syncthing versions
+
+* Syncthing Core
+* Syncthing-android
+* Syncthing-GTK
+
+* SyncTrayzor
+
+* Updates
+
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+
+## Starting Syncthing
+
+* As service
+
+* Windows
+  * Task Scheduler 
+  * Start on Login
+
+* Linux
+  * systemd server user/system
+  * ...
+
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+# The good
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+# The bad
+</textarea> </section>
+<section data-markdown> <textarea data-template>
+# The ugly
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Getting started
+
+* https://docs.syncthing.net/intro/getting-started.html#getting-started
+* https://docs.syncthing.net/users/autostart.html
+</textarea> </section>
+</section>
+
+<section>
+<section data-markdown> <textarea data-template>
+
+## Stats 
+
+* https://data.syncthing.net/
+</textarea> </section>
+</section>
+
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
+</html>
