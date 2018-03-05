@@ -6,7 +6,7 @@ readonly REMOTE_IP_LIST="$(grep -o 'ip:.*' "$VAGRANT_FILE" |  cut -d \" -f 2 | t
 readonly REMOTE_HOST_LIST=($(grep -o 'hostname.*' "$VAGRANT_FILE" | cut -d \" -f 2 | tr '\n' ' '))
 readonly REMOTE_PORT_SC=8384
 readonly REMOTE_PORT_WWW=8000
-readonly START_PORT=9900
+readonly START_PORT=8800
 readonly MY_IP="$(hostname -I | cut -f 1 -d ' ')"
 
 
